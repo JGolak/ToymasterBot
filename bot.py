@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Ensure Firefox is installed at runtime (Railway fix)
-subprocess.run(["playwright", "install", "--with-deps", "firefox"], check=False)
+# Ensure Chromium is installed at runtime (Railway fix)
+subprocess.run(["playwright", "install", "--with-deps", "chromium"], check=False)
 
 # Load environment variables
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
