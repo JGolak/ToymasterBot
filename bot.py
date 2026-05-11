@@ -42,8 +42,6 @@ async def get_latest_post():
                 headless=True,
                 args=["--no-sandbox", "--disable-setuid-sandbox"]
             )
-
-            )
             page = await browser.new_page()
             await page.goto(PAGE_URL, timeout=60000)
             await page.wait_for_timeout(5000)
