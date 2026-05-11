@@ -38,7 +38,10 @@ async def get_latest_post():
 
     try:
         async with async_playwright() as p:
-            browser = await p.firefox.launch(headless=True)
+            browser = await p.firefox.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-setuid-sandbox"]
+            )
             page = await browser.new_page()
             await page.goto(PAGE_URL, timeout=60000)
             await page.wait_for_timeout(5000)
@@ -64,6 +67,7 @@ async def get_latest_post():
     except Exception as e:
         print(f"❌ Facebook scraping error: {e}")
         return None
+
 
 
 @tasks.loop(seconds=60)
