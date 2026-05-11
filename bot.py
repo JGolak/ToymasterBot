@@ -1,10 +1,15 @@
 import os
+import asyncio
+import subprocess
+from playwright.async_api import async_playwright
 import discord
 from discord.ext import tasks
-from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
+
 load_dotenv()
 
+# Ensure Firefox is installed at runtime (Railway fix)
+subprocess.run(["playwright", "install", "--with-deps", "firefox"], check=False)
 
 # Load environment variables
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -27,9 +32,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
-
-import asyncio
-from playwright.async_api import async_playwright
 
 async def get_latest_post():
     print("🔍 Checking Facebook page...")
@@ -64,7 +66,6 @@ async def get_latest_post():
         return None
 
 
-
 @tasks.loop(seconds=60)
 async def check_page():
     global last_post
@@ -95,6 +96,7 @@ async def on_ready():
     print("🔁 Starting Facebook check loop...")
     check_page.start()
 
+
 @client.event
 async def on_message(message):
     if message.author == client.user:
@@ -103,5 +105,6 @@ async def on_message(message):
     if message.content == "!test":
         user = await client.fetch_user(USER_ID)
         await user.send("Test message from the bot — DM system works!")
+
 
 client.run(TOKEN)
