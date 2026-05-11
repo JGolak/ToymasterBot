@@ -38,9 +38,11 @@ async def get_latest_post():
 
     try:
         async with async_playwright() as p:
-            browser = await p.firefox.launch(
+            browser = await p.chromium.launch(
                 headless=True,
                 args=["--no-sandbox", "--disable-setuid-sandbox"]
+            )
+
             )
             page = await browser.new_page()
             await page.goto(PAGE_URL, timeout=60000)
