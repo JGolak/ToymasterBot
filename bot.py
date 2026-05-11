@@ -79,16 +79,22 @@ async def check_page():
     if latest is None:
         print("⚠️ No latest post detected")
         return
-
+        
     if last_post is None:
-        print("📌 Initial post stored")
+        print("📌 Initial post stored and sent to user")
+        user = await client.fetch_user(USER_ID)
+        await user.send(
+            f"📢 **Initial Toymaster Post Loaded**\n\n{latest}\n\n{PAGE_URL}"
+        )
         last_post = latest
         return
 
     if latest != last_post:
         print("🚨 NEW POST DETECTED!")
         user = await client.fetch_user(USER_ID)
-        await user.send(f"📢 **New Toymaster Post Detected!**\n\n{latest}\n\n{PAGE_URL}")
+        await user.send(
+            f"📢 **New Toymaster Post Detected!**\n\n{latest}\n\n{PAGE_URL}"
+        )
         last_post = latest
     else:
         print("⏳ No new posts")
